@@ -10,6 +10,11 @@
   "repository": {
     "type": "git"
   },
+ "engines": {
+    "node": "16.14.2",
+    "npm": "8.5.0",
+    "yarn": "1.22.10"
+  },
   "devDependencies": {
     "@types/node": "^16.11.4",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
