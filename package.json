@@ -1,9 +1,8 @@
 {
-  "name": "Bot House Scraper",
+  "name": "bot-house-scraper",
   "version": "1.0.0",
   "description": "House scraper for telegram",
   "main": "dist/app.js",
-  "engines": {},
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/app.js"
