@@ -1,27 +1,16 @@
 {
-  "name": "telegram-bot_node",
+  "name": "Bot House Scraper",
   "version": "1.0.0",
-  "description": "Telegram Bot with TypeScript, Node.js, and Telegraf and deployment configuration for Heroku",
+  "description": "House scraper for telegram",
   "main": "dist/app.js",
-  "engines": {
-    "node": "17.0",
-    "npm": "8.1"
-  },
+  "engines": {},
   "scripts": {
     "build": "tsc",
-    "start": "node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "yarn build && node dist/app.js"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pirasalbe/Telegram-Bot_Node.js.git"
+    "type": "git"
   },
-  "author": "pirasalbe",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/pirasalbe/Telegram-Bot_Node.js/issues"
-  },
-  "homepage": "https://github.com/pirasalbe/Telegram-Bot_Node.js#readme",
   "devDependencies": {
     "@types/node": "^16.11.4",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
@@ -30,6 +19,9 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.31",
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
     "telegraf": "^4.4.2"
   }
 }

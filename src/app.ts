@@ -1,55 +1,29 @@
 import { Context, Markup, Telegraf, Telegram } from 'telegraf';
+import { ArgenPropScraper } from './argenprop';
 import { Update } from 'typegram';
 
 const token: string = process.env.BOT_TOKEN as string;
 
-const telegram: Telegram = new Telegram(token);
-
 const bot: Telegraf<Context<Update>> = new Telegraf(token);
 
-const chatId: string = process.env.CHAT_ID as string;
+bot.start(async (ctx) => {
+  const scraper = new ArgenPropScraper();
 
-bot.start((ctx) => {
-  ctx.reply('Hello ' + ctx.from.first_name + '!');
-});
-
-bot.help((ctx) => {
-  ctx.reply('Send /start to receive a greeting');
-  ctx.reply('Send /keyboard to receive a message with a keyboard');
-  ctx.reply('Send /quit to stop the bot');
-});
-
-bot.command('quit', (ctx) => {
-  // Explicit usage
-  ctx.telegram.leaveChat(ctx.message.chat.id);
-
-  // Context shortcut
-  ctx.leaveChat();
-});
-
-bot.command('keyboard', (ctx) => {
-  ctx.reply(
-    'Keyboard',
-    Markup.inlineKeyboard([
-      Markup.button.callback('First option', 'first'),
-      Markup.button.callback('Second option', 'second'),
-    ])
-  );
-});
-
-bot.on('text', (ctx) => {
-  ctx.reply(
-    'You choose the ' +
-      (ctx.message.text === 'first' ? 'First' : 'Second') +
-      ' Option!'
+  const phs: string[] = await scraper.scrape(
+    'https://www.argenprop.com/casa-y-ph-alquiler-localidad-capital-federal-3-ambientes-y-4-ambientes-y-5-o-m%C3%A1s-ambientes-hasta-150000-pesos'
   );
 
-  if (chatId) {
-    telegram.sendMessage(
-      chatId,
-      'This message was sent without your interaction!'
-    );
-  }
+  const flats: string[] = await scraper.scrape(
+    'https://www.argenprop.com/departamento-alquiler-localidad-capital-federal-2-dormitorios-y-3-dormitorios-y-4-dormitorios-y-5-o-m%C3%A1s-dormitorios-hasta-150000-pesos'
+  );
+
+  phs.forEach((flat) => {
+    ctx.replyWithHTML(`PH: ${flat}`);
+  });
+
+  flats.forEach((flat) => {
+    ctx.replyWithHTML(`DPTO: ${flat}`);
+  });
 });
 
 bot.launch();
