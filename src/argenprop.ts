@@ -14,13 +14,25 @@ export class ArgenPropScraper {
       .map((item) => {
         const linkElement = ('https://www.argenprop.com' +
           $(item).find('a').attr('href')) as string;
+
         const price = $(item)
           .find('.card__price')
           .text()
           .replace(/\n/gm, ' ')
           .replace(/[\s]*/g, '');
 
-        console.log({ price });
+        const imgs = $(item)
+          .find('.card__photos img')
+          .toArray()
+          .map((element) => {
+            const src = $(element).attr('data-src');
+            return src;
+          });
+
+        const title = $(item)
+          .find('.card__title--primary.show-mobile')
+          .text()
+          .trim();
 
         const address = $(item).find('.card__address').text().trim();
 
@@ -28,7 +40,9 @@ export class ArgenPropScraper {
           source: 'argenprop',
           code: linkElement,
           url: linkElement,
-          html: `<a href="${linkElement}">${address}</a><b> ${price}</b>`,
+          imgs,
+          title,
+          html: `${address}, ${price}, URL:${linkElement}`,
         } as IPlace;
       });
 

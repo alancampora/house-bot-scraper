@@ -1,16 +1,16 @@
-import { Context, Telegraf } from 'telegraf';
+import { Telegram } from 'telegraf';
 import { ArgenPropScraper } from './argenprop';
-import { Update } from 'typegram';
 import dbConnect from './mongodb';
 import { IPlace, PlaceModel } from './models';
 
 import cron from 'node-cron';
 
 const token: string = process.env.BOT_TOKEN as string;
+const chatId: string = process.env.CHAT_ID as string;
 
-const bot: Telegraf<Context<Update>> = new Telegraf(token);
+const telegramBot = new Telegram(token);
 
-bot.start(async (ctx) => {
+const startBot = async () => {
   await dbConnect();
 
   cron.schedule('*/10 * * * *', async () => {
@@ -32,7 +32,7 @@ bot.start(async (ctx) => {
 
         await newPlace.save();
 
-        ctx.replyWithHTML(`PH: ${flat.html}`);
+        telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
       }
     });
 
@@ -44,14 +44,10 @@ bot.start(async (ctx) => {
 
         await newPlace.save();
 
-        ctx.replyWithHTML(`DPTO: ${flat.html}`);
+        telegramBot.sendMessage(chatId, `DPTO: ${flat.html}`);
       }
     });
   });
-});
+};
 
-bot.launch();
-
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+startBot();
