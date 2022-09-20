@@ -10,7 +10,7 @@ const chatId: string = process.env.CHAT_ID as string;
 
 const telegramBot = new Telegram(token);
 
-const delay = (time:number) => {
+const delay = (time: number) => {
   return new Promise((resolve) => setTimeout(resolve, time));
 };
 
@@ -32,36 +32,38 @@ const startBot = async () => {
       'https://www.argenprop.com/departamento-alquiler-localidad-capital-federal-2-dormitorios-y-3-dormitorios-y-4-dormitorios-y-5-o-m%C3%A1s-dormitorios-hasta-150000-pesos'
     );
 
-    phs.forEach(async (flat) => {
-      const place = await PlaceModel.findOne({ code: flat.code });
+    phs.forEach(async (flat, index) => {
+      setTimeout(async function () {
+        const place = await PlaceModel.findOne({ code: flat.code });
 
-      if (!place) {
-        console.log('Log: new place found ' + flat.code);
+        if (!place) {
+          console.log('Log: new place found ' + flat.code);
 
-        const newPlace = new PlaceModel(flat);
+          const newPlace = new PlaceModel(flat);
 
-        await newPlace.save();
+          await newPlace.save();
 
-        telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
- 
-        await delay(5000);
-      }
+          telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
+        }
+      }, index * 5000);
     });
 
-    flats.forEach(async (flat) => {
-      const place = await PlaceModel.find({ code: flat.code });
+    flats.forEach(async (flat, index) => {
+      setTimeout(async function () {
+        const place = await PlaceModel.find({ code: flat.code });
 
-      if (!place) {
-        console.log('Log: new place found ' + flat.code);
+        if (!place) {
+          console.log('Log: new place found ' + flat.code);
 
-        const newPlace = new PlaceModel(flat);
+          const newPlace = new PlaceModel(flat);
 
-        await newPlace.save();
+          await newPlace.save();
 
-        telegramBot.sendMessage(chatId, `DPTO: ${flat.html}`);
+          telegramBot.sendMessage(chatId, `DPTO: ${flat.html}`);
 
-        await delay(5000);
-      }
+          await delay(1000);
+        }
+      }, index * 5000);
     });
   });
 };
