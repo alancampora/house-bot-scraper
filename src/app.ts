@@ -44,7 +44,7 @@ const startBot = async () => {
 
         telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
  
-        await delay(1000);
+        await delay(5000);
       }
     });
 
