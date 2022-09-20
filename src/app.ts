@@ -10,13 +10,16 @@ const chatId: string = process.env.CHAT_ID as string;
 
 const telegramBot = new Telegram(token);
 
+const delay = (time:number) => {
+  return new Promise((resolve) => setTimeout(resolve, time));
+};
+
 const startBot = async () => {
   await dbConnect();
 
   console.log('Log: db connected');
 
   cron.schedule('*/10 * * * *', async () => {
-
     console.log('Log: running cron');
 
     const scraper = new ArgenPropScraper();
@@ -34,13 +37,14 @@ const startBot = async () => {
 
       if (!place) {
         console.log('Log: new place found ' + flat.code);
-        
+
         const newPlace = new PlaceModel(flat);
 
         await newPlace.save();
 
         telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
-
+ 
+        await delay(1000);
       }
     });
 
@@ -55,6 +59,8 @@ const startBot = async () => {
         await newPlace.save();
 
         telegramBot.sendMessage(chatId, `DPTO: ${flat.html}`);
+
+        await delay(1000);
       }
     });
   });
