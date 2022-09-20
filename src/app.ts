@@ -60,8 +60,6 @@ const startBot = async () => {
           await newPlace.save();
 
           telegramBot.sendMessage(chatId, `DPTO: ${flat.html}`);
-
-          await delay(1000);
         }
       }, index * 5000);
     });
