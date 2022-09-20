@@ -13,7 +13,12 @@ const telegramBot = new Telegram(token);
 const startBot = async () => {
   await dbConnect();
 
+  console.log('Log: db connected');
+
   cron.schedule('*/10 * * * *', async () => {
+
+    console.log('Log: running cron');
+
     const scraper = new ArgenPropScraper();
 
     const phs: IPlace[] = await scraper.scrape(
@@ -28,11 +33,14 @@ const startBot = async () => {
       const place = await PlaceModel.findOne({ code: flat.code });
 
       if (!place) {
+        console.log('Log: new place found ' + flat.code);
+        
         const newPlace = new PlaceModel(flat);
 
         await newPlace.save();
 
         telegramBot.sendMessage(chatId, `PH: ${flat.html}`);
+
       }
     });
 
@@ -40,6 +48,8 @@ const startBot = async () => {
       const place = await PlaceModel.find({ code: flat.code });
 
       if (!place) {
+        console.log('Log: new place found ' + flat.code);
+
         const newPlace = new PlaceModel(flat);
 
         await newPlace.save();
