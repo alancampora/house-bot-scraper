@@ -44,7 +44,7 @@ const startBot = async () => {
 
   console.log('Log: db connected');
 
-  //cron.schedule('*/10 * * * *', async () => {
+  cron.schedule('*/10 * * * *', async () => {
     console.log('Log: running cron');
 
     const scraper = new ArgenPropScraper();
@@ -65,7 +65,7 @@ const startBot = async () => {
     await update('Zona Props', zonapropFlats, telegramBot);
     await update('PH', phs, telegramBot);
     await update('DPTO', flats, telegramBot);
-  //});
+  });
 };
 
 const testZonaProp = async () => {
@@ -81,6 +81,5 @@ const testZonaProp = async () => {
     console.error(e);
   }
 };
-
 
 startBot();
