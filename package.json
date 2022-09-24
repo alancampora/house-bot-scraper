@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
+    "dev": "cp .env ./dist && yarn build && ENV=DEV node dist/app.js",
     "start": "yarn build && node dist/app.js"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "@types/cheerio": "^0.22.31",
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.2",
     "mongoose": "^6.6.1",
     "node-cron": "^3.0.2",
     "playwright": "^1.26.0",
