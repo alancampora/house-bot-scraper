@@ -21,6 +21,7 @@ export class ZonaPropScraper {
       args: [
         '--proxy-server=' + proxy,
         '--no-sandbox',
+        '--headless',
         '--disable-setuid-sandbox',
       ],
     });
